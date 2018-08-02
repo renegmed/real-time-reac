@@ -1,0 +1,18 @@
+Pluralsight: Building Real-time Apps with React, Socket.io, and RethinkDB
+
+https://github.com/hendrikswan/realtime-rethink-lessons
+
+Course requirement:
+
+	node v6.11
+	yarnpkg.com
+$ cd client 
+$ yarn
+
+$ ../server
+$ yarn
+
+$ ../client
+$ yarn start
+
+	

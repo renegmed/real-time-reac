@@ -1,0 +1,25 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts-build",
+    "eject": "react-scripts eject",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "rxjs": "^6.2.2",
+    "rxsync": "0.0.3",
+    "simple-react-canvas": "0.0.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "react-scripts": "^1.1.4"
+  }
+}
