@@ -21,6 +21,13 @@ function subscribeToDrawings({ client, connection }){
     });
 };
 
+function handleLinePublish({ line, connection }) {
+    console.log('saving line to the db');
+    r.table('lines')
+    .insert(Object.assign(line, {timestamp: new Date() }))
+    .run(connection);
+}
+
 r.connect({
     host: 'localhost',
     port: 28015,
@@ -36,6 +43,10 @@ r.connect({
            client,
            connection,
        }));
+
+       client.on('publishLine', (line) => handleLinePublish(
+           { line, connection }
+       ));
     });
 });
 

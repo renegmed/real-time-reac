@@ -29,3 +29,10 @@ http://localhost:8080
 
 r.db('awesome_whiteboard').table('timers').insert({timestamp: new Date()})
 
+07 - saving a drawing to RethinkDb 
+
+	Publish drawing lines to RethinkDB
+		Handle drawing events 
+		Publish events over web socket
+		Store drawing events in RethinkDB table named 'lines'
+
