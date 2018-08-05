@@ -1,6 +1,26 @@
 const io = require('socket.io')(); // with (), io becomes an object
 const r = require('rethinkdb');
 
+function createDrawing({ connection, name}) {
+    r.table('drawings')
+        .insert({
+            name,
+            timestamp: new Date(),
+        })
+        .run(connection)  // run the query with the connection
+        .then(() => console.log('created a drawing with name: ', name));
+};
+
+function subscribeToDrawings({ client, connection }){
+    r.table('drawings')
+    .changes({ include_initial: true})
+    .run(connection)        // run the query with the connection
+    .then( (cursor) => {
+        cursor.each( (err, drawingRow) => client.emit('drawing', 
+        drawingRow.new_val));
+    });
+};
+
 r.connect({
     host: 'localhost',
     port: 28015,
@@ -8,20 +28,14 @@ r.connect({
 }).then( (connection) => {
     // receiving message from client
     io.on('connection', (client) => {
-        client.on('subscribeToTimer', (interval) => {  // response to event named 'subscribeToTimer'
-            console.log('client is subscribing to timer with intereval ', interval);
-           
-            r.table('timers')
-                .changes()
-                .run(connection)
-                .then( (cursor) => {
-                    cursor.each( (err, timerRow) => {
-                        // send 'timer' message with date timestamp value
-                        client.emit('timer', timerRow.new_val.timestamp);
-                    });
-                });     
-             ;
-        }); 
+       client.on('createDrawing', ({ name }) => {
+            createDrawing( { connection, name });
+       });
+
+       client.on('subscribeToDrawings', () => subscribeToDrawings({
+           client,
+           connection,
+       }));
     });
 });
 

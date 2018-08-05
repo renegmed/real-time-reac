@@ -19,9 +19,13 @@ $ yarn
 $ ../client
 $ yarn start
 
+
+
+02 - changed rethinkdb values pass through socket
 	
 $ rethinkdb 
 
 http://localhost:8080
 
+r.db('awesome_whiteboard').table('timers').insert({timestamp: new Date()})
 
