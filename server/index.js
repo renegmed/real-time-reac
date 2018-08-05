@@ -14,9 +14,9 @@ function createDrawing({ connection, name}) {
 function subscribeToDrawings({ client, connection }){
     r.table('drawings')
     .changes({ include_initial: true})
-    .run(connection)        // run the query with the connection
+    .run(connection)                                // run the query with the connection
     .then( (cursor) => {
-        cursor.each( (err, drawingRow) => client.emit('drawing', 
+        cursor.each( (err, drawingRow) => client.emit('drawing',   // publish 'drawing' new value
         drawingRow.new_val));
     });
 };
@@ -28,11 +28,11 @@ r.connect({
 }).then( (connection) => {
     // receiving message from client
     io.on('connection', (client) => {
-       client.on('createDrawing', ({ name }) => {
+       client.on('createDrawing', ({ name }) => {       // receive from client message 'createDrawing'
             createDrawing( { connection, name });
        });
 
-       client.on('subscribeToDrawings', () => subscribeToDrawings({
+       client.on('subscribeToDrawings', () => subscribeToDrawings({  // received from client message 'subscribeToDrawings'
            client,
            connection,
        }));
