@@ -8,7 +8,7 @@ class DrawingForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        createDrawing(this.state.drawingName);
+        createDrawing(this.state.drawingName);  // this drawing name will be emitted to server
         this.setState({ drawingName: ''});
     }
 

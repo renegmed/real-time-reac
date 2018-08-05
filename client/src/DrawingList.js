@@ -18,11 +18,13 @@ class DrawingList extends Component {
  
 
     render() {
+        // onclick calls a function selectDrawing defined in App.js
         const drawings = this.state.drawings.map( drawing => {
             return(
                 <li
                     className="DrawingList-item"
                     key={drawing.id}
+                    onClick={ event => {this.props.selectDrawing(drawing) } }                    
                 >
                 {drawing.name}
                 </li>
