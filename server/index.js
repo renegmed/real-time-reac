@@ -21,6 +21,17 @@ function subscribeToDrawings({ client, connection }){
     });
 };
 
+function subscribeToDrawingLines({ client, connection, drawingId }){
+    return r.table('lines')
+        .filter(r.row('drawingId').eq(drawingId))
+        .changes({ include_initial: true })    // if there is a change in the table, run sql
+        .run(connection)
+        .then( (cursor) => {
+            cursor.each( (err, lineRow) => 
+              client.emit(`drawingLine:${drawingId}`, lineRow.new_val)); // topic is by drawingId, emit the drawing line points
+        });
+};
+
 function handleLinePublish({ line, connection }) {
     console.log('saving line to the db');
     r.table('lines')
@@ -47,6 +58,14 @@ r.connect({
        client.on('publishLine', (line) => handleLinePublish(
            { line, connection }
        ));
+
+       client.on('subscribeToDrawingLines', (drawingId) => {
+           subscribeToDrawingLines({
+              client,
+              connection,
+              drawingId,
+           });
+       });
     });
 });
 

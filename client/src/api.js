@@ -13,10 +13,14 @@ function createDrawing(name) {
 function publishLine({ drawingId, line }) {
     socket.emit('publishLine', { drawingId, ...line });
 }
-
+function subscribeToDrawingLines(drawingId, cb) {
+    socket.on(`drawingLine:${drawingId}`, cb);          // ready to receive drawingId's drawing line points
+    socket.emit('subscribeToDrawingLines', drawingId);  // subscribing to drawing lines points
+}
 
 export {
     createDrawing,
     subscribeToDrawings,
     publishLine,
+    subscribeToDrawingLines,
 };

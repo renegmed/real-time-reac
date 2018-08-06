@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import Canvas from 'simple-react-canvas';
-import { publishLine } from './api';
+import { publishLine, subscribeToDrawingLines } from './api';
 
 class Drawing extends Component {
+    state = {
+        lines: [],
+    };
+
+    componentDidMount() {
+        subscribeToDrawingLines(this.props.drawing.id, (line) => {
+            this.setState( (prevState) => {  // prevState is the current state that will be modified
+                return {
+                    lines : [...prevState.lines, line]  // new line is added to previous array of lines to form a new array of lines
+                }
+            });
+        });
+    }
 
     // publishLine() is defined in api.js that emits drawing points (line) to server
     // and save to thinkdb table 'lines'
@@ -22,7 +35,8 @@ class Drawing extends Component {
                 <div className="Drawing-title">{this.props.drawing.name}</div>
                 <Canvas 
                     drawingEnabled={true} 
-                    onDraw={this.handleDraw}    
+                    onDraw={this.handleDraw}
+                    lines={this.state.lines}    
                 />
             </div>    
 
