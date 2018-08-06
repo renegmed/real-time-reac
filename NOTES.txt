@@ -36,3 +36,19 @@ r.db('awesome_whiteboard').table('timers').insert({timestamp: new Date()})
 		Publish events over web socket
 		Store drawing events in RethinkDB table named 'lines'
 
+
+09 - Improving Rendering time
+
+		Reference:
+
+		Optimizing Performance - https://reactjs.org/docs/optimizing-performance.html
+
+		Batching events to speed up the rendering of drawing
+
+			Number of Component Renders == Number of batches of line Events(+1)
+
+		
+		Use of RxJS for data streaming - reactivex.io/rxjs 
+
+		$ yarn add rxjs rxjs-compat
+		 
