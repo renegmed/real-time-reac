@@ -52,3 +52,10 @@ r.db('awesome_whiteboard').table('timers').insert({timestamp: new Date()})
 
 		$ yarn add rxjs rxjs-compat
 		 
+
+10 - Connecting to Different Port
+
+		http://localhost:3000/?1000  connects to port 1000 triggers a page message  
+		"We've lost connection to ourt server..."
+
+		

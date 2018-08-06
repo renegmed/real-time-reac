@@ -1,7 +1,13 @@
 import openSocket from 'socket.io-client';
 import Rx from 'rxjs/Rx';
 
-const socket = openSocket('http://localhost:8000');
+// this is a hack, not recommeded
+// search the current location's search attribute, replace ? with ''. if it is not possible, use default 8000 port
+console.log(window.location.search);
+const port = parseInt(window.location.search.replace('?', ''), 10) || 8000;
+console.log(port);
+
+const socket = openSocket(`http://localhost:${port}`);
 
 function subscribeToDrawings(cb) {
     socket.on('drawing', cb);                   // receives 'drawing' topic from server
@@ -32,9 +38,27 @@ function subscribeToDrawingLines(drawingId, cb) {
     socket.emit('subscribeToDrawingLines', drawingId);  // subscribing to drawing lines points
 }
 
+function subscribeToConnectionEvent(cb) {
+    socket.on('connect', () => cb({
+        state: 'connected',
+        port,
+    }));
+
+    socket.on('disconnect', () => cb({
+        state: 'disconnected',
+        port,
+    }));
+
+    socket.on('connect_error', () => cb({
+        state: 'disconnected',
+        port,
+    }));
+}
+
 export {
     createDrawing,
     subscribeToDrawings,
     publishLine,
     subscribeToDrawingLines,
+    subscribeToConnectionEvent,
 };
